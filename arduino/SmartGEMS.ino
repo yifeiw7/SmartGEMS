@@ -1,21 +1,33 @@
-#include "dht11.h"
+#include <dht11.h>
 #include <LiquidCrystal.h>
+#include <LedControl.h>
+#include <binary.h>
 
-DHT11 DHT(4);
+DHT11 DHT(43);
 
-const int rs = 7, en = 8, d4 = 9, d5 = 10, d6 = 11, d7 = 12;
+const int rs = 25, en = 27, d4 = 29, d5 = 31, d6 = 33, d7 = 35;
+// const int rs = 33, en = 31, d4 = 29, d5 = 27, d6 = 25, d7 = 23;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
-
+//5 4 43 41
 const int light, water, soil, humidity, temperature; 
-
-
+int val = 0;
 int inputPin = 13;               // Connect sensor to input pin 3 
-const int digitalOutPin1 = 2;
-const int digitalOutPin2 = 3;
-const int digitalOutPin3 = 5;
-const int digitalOutPin4 = 6;
+const int digitalOutPin1 = 41;
+const int digitalOutPin2 = 7;
+const int digitalOutPin3 = 9;
+const int digitalOutPin4 = 8;
+const int red = 2;
+const int yellow = 3;
+const int green = 4;
 bool last_state = digitalRead(inputPin);
 int state = 0;
+
+LedControl lc=LedControl(10,12,11,1);
+
+// delay time between faces
+//unsigned long delaytime=1000;
+
+byte he[1]= {B11111111};
 
 void setup(){
   pinMode(inputPin, INPUT);     // declare pushbutton as input
@@ -25,15 +37,141 @@ void setup(){
   // Serial.println("Type,\tstatus,\tHumidity (%),\tTemperature (C)");
   lcd.begin(16, 2);
   Serial.begin(9600);
+
+  lc.shutdown(0,false);
+  // Set brightness to a medium value
+  lc.setIntensity(0,1);
+  // Clear the display
+  lc.clearDisplay(0);  
+}
+
+void drawFaces(){
+  if (val == 0){
+    lc.setRow(0,0,0);
+    lc.setRow(0,1,0);
+    lc.setRow(0,2,0);
+    lc.setRow(0,3,0);
+    lc.setRow(0,4,0);
+    lc.setRow(0,5,0);
+    lc.setRow(0,6,0);
+    lc.setRow(0,7,0);
+    //delay(delaytime);
+  }
+  else if (val == 1){
+    lc.setRow(0,0,he[0]);
+    lc.setRow(0,1,0);
+    lc.setRow(0,2,0);
+    lc.setRow(0,3,0);
+    lc.setRow(0,4,0);
+    lc.setRow(0,5,0);
+    lc.setRow(0,6,0);
+    lc.setRow(0,7,0);
+    //delay(delaytime);
+  }
+  else if (val == 2){
+    lc.setRow(0,0,he[0]);
+    lc.setRow(0,1,he[0]);
+    lc.setRow(0,2,0);
+    lc.setRow(0,3,0);
+    lc.setRow(0,4,0);
+    lc.setRow(0,5,0);
+    lc.setRow(0,6,0);
+    lc.setRow(0,7,0);
+    //delay(delaytime);
+  }
+  else if (val == 3){
+    lc.setRow(0,0,he[0]);
+    lc.setRow(0,1,he[0]);
+    lc.setRow(0,2,he[0]);
+    lc.setRow(0,3,0);
+    lc.setRow(0,4,0);
+    lc.setRow(0,5,0);
+    lc.setRow(0,6,0);
+    lc.setRow(0,7,0);
+    //delay(delaytime);
+  }
+  else if (val == 4){
+    lc.setRow(0,0,he[0]);
+    lc.setRow(0,1,he[0]);
+    lc.setRow(0,2,he[0]);
+    lc.setRow(0,3,he[0]);
+    lc.setRow(0,4,0);
+    lc.setRow(0,5,0);
+    lc.setRow(0,6,0);
+    lc.setRow(0,7,0);
+    //delay(delaytime);
+  }
+  else if (val == 5){
+    lc.setRow(0,0,he[0]);
+    lc.setRow(0,1,he[0]);
+    lc.setRow(0,2,he[0]);
+    lc.setRow(0,3,he[0]);
+    lc.setRow(0,4,he[0]);
+    lc.setRow(0,5,0);
+    lc.setRow(0,6,0);
+    lc.setRow(0,7,0);
+    //delay(delaytime);
+  }
+  else if (val == 6){
+    lc.setRow(0,0,he[0]);
+    lc.setRow(0,1,he[0]);
+    lc.setRow(0,2,he[0]);
+    lc.setRow(0,3,he[0]);
+    lc.setRow(0,4,he[0]);
+    lc.setRow(0,5,he[0]);
+    lc.setRow(0,6,0);
+    lc.setRow(0,7,0);
+    //delay(delaytime);
+  }
+  else if (val == 7){
+    lc.setRow(0,0,he[0]);
+    lc.setRow(0,1,he[0]);
+    lc.setRow(0,2,he[0]);
+    lc.setRow(0,3,he[0]);
+    lc.setRow(0,4,he[0]);
+    lc.setRow(0,5,he[0]);
+    lc.setRow(0,6,he[0]);
+    lc.setRow(0,7,0);
+    //delay(delaytime);
+  }
+  else if (val == 8){
+    lc.setRow(0,0,he[0]);
+    lc.setRow(0,1,he[0]);
+    lc.setRow(0,2,he[0]);
+    lc.setRow(0,3,he[0]);
+    lc.setRow(0,4,he[0]);
+    lc.setRow(0,5,he[0]);
+    lc.setRow(0,6,he[0]);
+    lc.setRow(0,7,he[0]);
+    //delay(delaytime);
+  }
 }
 
 void loop(){
+  // // DISPLAY DATA IN SERIAL
+  // Serial.print(DHT.readTemperature(),1);
+  // Serial.print(",");
 
+  // //Serial.print("Water Level: ");
+  // Serial.print(analogRead(0)); 
+  // Serial.print(",");
+
+  // //Serial.print("Soil Moisture Level: ");
+  // Serial.print(analogRead(1)); 
+  // Serial.print(",");
+  
+  // //Serial.print("Wind: "); 
+  // Serial.print(analogRead(3));
+  // Serial.print(",");
+
+  // //Serial.print("Light Intensity: ");
+  // Serial.print(analogRead(2)); 
+  // Serial.println(",");
+  
 
   if (millis() % 2 == 0){
     int val = digitalRead(inputPin);
     if (state == 0){
-      Serial.print("state 0\n");
       digitalWrite(digitalOutPin1, LOW);
       digitalWrite(digitalOutPin2, LOW);
       digitalWrite(digitalOutPin3, LOW);
@@ -48,7 +186,6 @@ void loop(){
       }
     }
     else if (state == 1){
-      Serial.print("state 1\n");
       digitalWrite(digitalOutPin1, HIGH);
       digitalWrite(digitalOutPin2, HIGH);
       digitalWrite(digitalOutPin3, LOW);
@@ -65,9 +202,8 @@ void loop(){
       }
     }
     else if (state == 2){
-      Serial.print("state 2\n");
       digitalWrite(digitalOutPin1, HIGH);
-      Serial.print(digitalRead(digitalOutPin1));
+      //Serial.print(digitalRead(digitalOutPin1));
       digitalWrite(digitalOutPin2, HIGH);
       digitalWrite(digitalOutPin3, HIGH);
       digitalWrite(digitalOutPin4, HIGH);
@@ -114,30 +250,8 @@ void loop(){
     lcd.setCursor(14, 1);
     lcd.print(DHT.readTemperature()); 
 
+    // if (analogRead(2) > 500){ 
+    // }
 
-    // DISPLAY DATA IN SERIAL
-    //Serial.print("Temperature: "); 
-    Serial.println(DHT.readTemperature(),1);
-
-    //Serial.print("Light Intensity: ");
-    Serial.print(analogRead(2)); 
-    Serial.print(",\t");
-
-    //Serial.print("Water Level: ");
-    Serial.print(analogRead(1)); 
-    Serial.print(",\t");
-
-    //Serial.print("Soil Moisture Level: ");
-    Serial.print(analogRead(0)); 
-    Serial.print(",\t");
-
-    //Serial.print("Humidity: "); 
-    Serial.print(DHT.readHumidity(),1);
-    Serial.print(",\t");
-
-    //Serial.print("Wind: "); 
-    Serial.print(analogRead(3));
-    Serial.print(",\t");
   }
-
 }
